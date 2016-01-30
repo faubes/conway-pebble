@@ -1,0 +1,22 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "joelfaubert@gmail.com",
+    "longName": "Game of Life",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "Game of Life",
+    "targetPlatforms": [
+        "aplite"
+    ],
+    "uuid": "363a833d-4885-4bdc-80af-13e2c44b6420",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
