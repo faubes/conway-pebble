@@ -9,6 +9,8 @@ static void window_unload();
 static void randomize_board();
 static void born(int x, int y);
 static void dies(int x, int y);
+static void up_click_handler(ClickRecognizerRef recognizer, void *context);
+static void click_config_provider(void *context);
 
 unsigned char density[48][48];
 bool board[48][48];
@@ -22,6 +24,7 @@ void handle_init(void) {
     .load = window_load,
     .unload = window_unload
   });
+  window_set_click_config_provider(window, click_config_provider);
 	window_stack_push(window, true);
 	randomize_board();
 }
@@ -114,11 +117,17 @@ static void my_layer_draw(Layer *layer, GContext *ctx) {
     graphics_fill_rect(ctx, GRect(3*i, 3*j, 3, 3), 3, 0);
     }
   }
-  parse();
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Up clicked.");
   parse();
+  layer_mark_dirty(layer);
+}
+
+static void click_config_provider(void *context) {
+  // Register the ClickHandlers
+  window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
 }
 
 void handle_deinit(void) {
