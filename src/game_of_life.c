@@ -29,7 +29,7 @@ void handle_init(void) {
 static void randomize_board() {
   for (int i=0; i<48; i++) {
     for (int j=0; j<48; j++) {
-      if ((rand() % 2) == 1) born(i,j);
+      if ((rand() % 10) < 2) born(i,j);
     }
   }
 }
