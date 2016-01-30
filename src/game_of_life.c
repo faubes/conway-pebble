@@ -29,6 +29,8 @@ void handle_init(void) {
 static void randomize_board() {
   for (int i=0; i<48; i++) {
     for (int j=0; j<48; j++) {
+      board[i][j]=false;
+      density[i][j]=0;
       if ((rand() % 10) < 2) born(i,j);
     }
   }
@@ -65,7 +67,6 @@ static void dies(int x, int y) {
   density[r][y]--;
   density[r][b]--;
   board[x][y] = false;
-  
 }
 
 static void born(int x, int y) {
@@ -82,14 +83,14 @@ static void born(int x, int y) {
   density[r][y]++;
   density[r][b]++;
   board[x][y] = true;
-  
 }
+
 static void parse() {
   bool lifefound = false;
   for (int x=0; x<48; x++) {
     for (int y=0; y<48; y++) {
       if (board[x][y]) lifefound = true;
-      if (density[x][y] <2 || density[x][y] >3 ) {
+      if (density[x][y] < 2 || density[x][y] >3 ) {
         dies(x,y);
       }
       if (!board[x][y] && density[x][y] == 3) {
@@ -113,6 +114,10 @@ static void my_layer_draw(Layer *layer, GContext *ctx) {
     graphics_fill_rect(ctx, GRect(3*i, 3*j, 3, 3), 3, 0);
     }
   }
+  parse();
+}
+
+static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   parse();
 }
 
