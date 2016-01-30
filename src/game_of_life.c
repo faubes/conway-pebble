@@ -16,6 +16,12 @@ unsigned char density[48][48];
 bool board[48][48];
 bool alldead=false;
 
+int abs(int v) 
+{
+  return v * ( (v<0) * (-1) + (v>0));
+  // simpler: v * ((v>0) - (v<0))   thanks Jens
+}
+
 void handle_init(void) {
 	// Create a window and text layer
 	window = window_create();	
@@ -42,6 +48,7 @@ static void randomize_board() {
 
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
+  
   // Create Layer
   layer = layer_create(GRect(0, 12, 144, 144));
   layer_add_child(window_layer, layer);
@@ -57,10 +64,10 @@ static void window_unload(Window *window) {
 }
 
 static void dies(int x, int y) {
-  int l = (x-1) % 48;
+  int l = abs((x-1) % 48);
   int r = (x+1) % 48;
   int t = (y+1) % 48;
-  int b = (y-1) % 48;
+  int b = abs((y-1) % 48);
   density[l][t]--;
   density[l][y]--;
   density[l][b]--;
@@ -73,10 +80,10 @@ static void dies(int x, int y) {
 }
 
 static void born(int x, int y) {
-  int l = (x-1) % 48;
+  int l = abs((x-1) % 48);
   int r = (x+1) % 48;
   int t = (y+1) % 48;
-  int b = (y-1) % 48;
+  int b = abs((y-1) % 48);
   density[l][t]++;
   density[l][y]++;
   density[l][b]++;
@@ -121,8 +128,8 @@ static void my_layer_draw(Layer *layer, GContext *ctx) {
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Up clicked.");
-  parse();
   layer_mark_dirty(layer);
+  parse();
 }
 
 static void click_config_provider(void *context) {
